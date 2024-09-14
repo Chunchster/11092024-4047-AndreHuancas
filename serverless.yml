@@ -1,0 +1,97 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: chunchster
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: serverless-indra
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-2
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource:
+        - ${env:PEOPLE_SECRET}
+        - ${env:USERS_SECRET}
+
+functions:
+  createUsers:
+    handler: src/users.register
+    events:
+      - httpApi:
+          path: /users/register
+          method: post
+  createToken:
+    handler: src/users.login
+    events:
+      - httpApi:
+          path: /users/login
+          method: post
+  createPeople:
+    handler: src/people.addPeople
+    events:
+      - httpApi:
+          path: /people/add
+          method: post
+  listPeople:
+    handler: src/people.getPeople
+    events:
+      - httpApi:
+          path: /people
+          method: get
+  listFilms:
+    handler: src/films.getFilms
+    events:
+      - httpApi:
+          path: /films
+          method: get
+  listPlanets:
+    handler: src/planets.getPlanets
+    events:
+      - httpApi:
+          path: /planets
+          method: get
+  listSpecies:
+    handler: src/species.getSpecies
+    events:
+      - httpApi:
+          path: /species
+          method: get
+  listStarships:
+    handler: src/starships.getStarships
+    events:
+      - httpApi:
+          path: /starships
+          method: get
+  listVehicles:
+    handler: src/vehicles.getVehicles
+    events:
+      - httpApi:
+          path: /vehicles
+          method: get
+
+resources: # CloudFormation template syntax
+  Resources:
+    PeopleTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${env:PEOPLE_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+    UsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${env:USERS_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: username
+            AttributeType: S
+        KeySchema:
+          - AttributeName: username
+            KeyType: HASH
