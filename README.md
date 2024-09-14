@@ -27,7 +27,7 @@ Esta documentación guía paso a paso cómo desplegar una API HTTP con Node.js e
 Clonar el repositorio
   
 ```
-git clone <repository-url>
+git clone https://github.com/Chunchster/11092024-4047-AndreHuancas.git
 cd serverless-indra
 ```
 
