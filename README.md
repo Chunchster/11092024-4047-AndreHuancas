@@ -28,7 +28,7 @@ Clonar el repositorio
   
 ```
 git clone https://github.com/Chunchster/11092024-4047-AndreHuancas.git
-cd serverless-indra
+cd 11092024-4047-AndreHuancas
 ```
 
 Instala las dependencias
